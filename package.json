@@ -1,0 +1,17 @@
+{
+  "name": "crm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenHelloWorld/CRM.git"
+  },
+  "author": "denissaveliev23@gmail.com",
+  "license": "SEE LICENSE IN ./LICENSE",
+  "bugs": {
+    "url": "https://github.com/DenHelloWorld/CRM/issues"
+  },
+  "homepage": "https://github.com/DenHelloWorld/CRM#readme"
+}
