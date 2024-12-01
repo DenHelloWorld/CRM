@@ -1,18 +1,24 @@
 export enum StatusResponse {
-  SUCCESS = 'success',
-  ERROR = 'error',
-  NOT_FOUND = 'not_found',
-  UNAUTHORIZED = 'unauthorized',
-  FORBIDDEN = 'forbidden',
-  VALIDATION_ERROR = 'validation_error',
-  INTERNAL_SERVER_ERROR = 'internal_server_error',
-  CREATED = 'created',
-  UPDATED = 'updated',
-  DELETED = 'deleted',
-  PENDING = 'pending',
+  SUCCESS = 200,
+  CREATED = 201,
+  NO_CONTENT = 204,
+  ERROR = 400,
+  NOT_FOUND = 404,
+  UNAUTHORIZED = 401,
+  FORBIDDEN = 403,
+  VALIDATION_ERROR = 422,
+  INTERNAL_SERVER_ERROR = 500,
+  PENDING = 102,
 }
-export interface ApiResponse<T> {
-  status: StatusResponse;
-  message: string;
-  payload: T;
+
+export interface Response {
+  message: string[];
+  statusCode: StatusResponse;
+}
+export interface SuccesResponse<T> extends Response {
+  payload?: T;
+}
+
+export interface ErrorResponse extends Response {
+  error?: string;
 }
