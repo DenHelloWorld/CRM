@@ -12,11 +12,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import {
-  ErrorResponse,
-  StatusResponse,
-  SuccesResponse,
-} from '../../app.models';
+import { ErrorResponse, SuccesResponse } from '../../app.models';
 import { User } from '@prisma/client';
 import { FindUserByIdDto } from './dto/find-user-by-id.dto';
 // import { UpdateUserDto } from './dto/update-user.dto';
@@ -26,7 +22,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createUserDto: CreateUserDto,
   ): Promise<SuccesResponse<Omit<User, 'password'>>> {
@@ -34,22 +30,22 @@ export class UserController {
     return {
       message: ['User created successfully'],
       payload: user,
-      statusCode: StatusResponse.CREATED,
+      statusCode: HttpStatus.CREATED,
     };
   }
   @Get()
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async findAll(): Promise<SuccesResponse<Omit<User, 'password'>[]>> {
     const users = await this.userService.findAll();
     return {
       message: ['Users retrieved successfully'],
       payload: users,
-      statusCode: StatusResponse.SUCCESS,
+      statusCode: HttpStatus.OK,
     };
   }
 
   @Get(':id')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async findOne(
     @Param() dto: FindUserByIdDto,
   ): Promise<SuccesResponse<Omit<User, 'password'>>> {
@@ -59,7 +55,7 @@ export class UserController {
       const errorResponse: ErrorResponse = {
         message: [`User with id ${dto.id} not found`],
         error: 'Not found',
-        statusCode: StatusResponse.NOT_FOUND,
+        statusCode: HttpStatus.NOT_FOUND,
       };
 
       throw new HttpException(errorResponse, HttpStatus.NOT_FOUND);
@@ -68,7 +64,7 @@ export class UserController {
     return {
       message: ['User retrieved successfully'],
       payload: user,
-      statusCode: StatusResponse.SUCCESS,
+      statusCode: HttpStatus.OK,
     };
   }
 
