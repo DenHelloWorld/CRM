@@ -1,18 +1,34 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
+import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '@prisma/client';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
-
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
-  // create(createUserDto: CreateUserDto) {
-  //   return 'This action adds a new user';
-  // }
+  @Inject(PrismaService) private readonly prisma: PrismaService;
 
-  async findAll(): Promise<User[]> {
-    return await this.prisma.user.findMany();
+  private readonly userWithoutPasswordSelect = {
+    id: true,
+    email: true,
+    name: true,
+    createdAt: true,
+    updatedAt: true,
+    role: true,
+    password: false,
+  };
+
+  async create(dto: CreateUserDto): Promise<Omit<User, 'password'>> {
+    return await this.prisma.user.create({
+      data: {
+        ...dto,
+      },
+      select: this.userWithoutPasswordSelect,
+    });
+  }
+
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    return await this.prisma.user.findMany({
+      select: this.userWithoutPasswordSelect,
+    });
   }
 
   findOne(id: number) {
