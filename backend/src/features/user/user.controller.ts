@@ -4,18 +4,19 @@ import {
   Post,
   Body,
   HttpCode,
-  // Patch,
+  Put,
   Param,
   HttpException,
   HttpStatus,
-  // Delete,
+  Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { ErrorResponse, SuccesResponse } from '../../app.models';
 import { User } from '@prisma/client';
-import { FindUserByIdDto } from './dto/find-user-by-id.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import isNotUuidError from '../../helpers/isNotUuidError';
+import isUserNotFound from '../../helpers/isUserNotFound';
 
 @Controller('user')
 export class UserController {
@@ -47,19 +48,13 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(
-    @Param() dto: FindUserByIdDto,
+    @Param('id') id: string,
   ): Promise<SuccesResponse<Omit<User, 'password'>>> {
-    const user = await this.userService.findOne(dto.id);
+    isNotUuidError(id);
 
-    if (!user) {
-      const errorResponse: ErrorResponse = {
-        message: [`User with id ${dto.id} not found`],
-        error: 'Not found',
-        statusCode: HttpStatus.NOT_FOUND,
-      };
+    const user = await this.userService.findOne(id);
 
-      throw new HttpException(errorResponse, HttpStatus.NOT_FOUND);
-    }
+    isUserNotFound(user, id);
 
     return {
       message: ['User retrieved successfully'],
@@ -68,12 +63,41 @@ export class UserController {
     };
   }
 
-  // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  // //   return this.userService.update(+id, updateUserDto);
-  // // }
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+    isNotUuidError(id);
+
+    const user = await this.userService.findOne(id);
+
+    isUserNotFound(user, id);
+
+    if ('password' in dto) {
+      const errorResponse: ErrorResponse = {
+        message: ['Updating password is not allowed via this endpoint'],
+        error: 'Forbidden',
+        statusCode: HttpStatus.FORBIDDEN,
+      };
+
+      throw new HttpException(errorResponse, HttpStatus.FORBIDDEN);
+    }
+    const updatedUser = await this.userService.update(user, dto);
+
+    return {
+      message: ['User updateted successfully'],
+      payload: updatedUser,
+      statusCode: HttpStatus.OK,
+    };
+  }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string) {
+    isNotUuidError(id);
+
+    const user = await this.userService.findOne(id);
+
+    isUserNotFound(user, id);
+
+    return await this.userService.remove(id);
+  }
 }

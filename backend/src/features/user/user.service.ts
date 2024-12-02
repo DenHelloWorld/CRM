@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from '@prisma/client';
+import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UserService {
   @Inject(PrismaService) private readonly prisma: PrismaService;
@@ -38,11 +39,22 @@ export class UserService {
     });
   }
 
-  // update(id: number, updateUserDto: UpdateUserDto) {
-  //   return `This action updates a #${id} user`;
-  // }
+  async update(
+    user: Omit<User, 'password'>,
+    dto: UpdateUserDto,
+  ): Promise<Omit<User, 'password'>> {
+    return await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        ...dto,
+      },
+      select: this.userWithoutPasswordSelect,
+    });
+  }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} user`;
-  // }
+  async remove(id: string) {
+    return await this.prisma.user.delete({
+      where: { id },
+    });
+  }
 }

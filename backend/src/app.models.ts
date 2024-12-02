@@ -5,9 +5,9 @@ export interface Response {
   statusCode: HttpStatus;
 }
 export interface SuccesResponse<T> extends Response {
-  payload?: T;
+  payload: T;
 }
 
 export interface ErrorResponse extends Response {
-  error?: string;
+  error: string;
 }
