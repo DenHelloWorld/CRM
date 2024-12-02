@@ -2,8 +2,11 @@
   "name": "crm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "main": "index.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node index.mjs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DenHelloWorld/CRM.git"
@@ -13,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/DenHelloWorld/CRM/issues"
   },
-  "homepage": "https://github.com/DenHelloWorld/CRM#readme"
+  "homepage": "https://github.com/DenHelloWorld/CRM#readme",
+  "devDependencies": {
+    "@types/node": "^22.10.1"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
 }
