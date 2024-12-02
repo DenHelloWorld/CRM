@@ -2,10 +2,9 @@
   "name": "crm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "start": "node index.mjs"
+    "start": "concurrently \"cd frontend && npm run start\" \"cd backend && npm run docker:up\" \"cd backend && npm run start:dev\""
   },
   "repository": {
     "type": "git",
@@ -18,9 +17,6 @@
   },
   "homepage": "https://github.com/DenHelloWorld/CRM#readme",
   "devDependencies": {
-    "@types/node": "^22.10.1"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.5"
+    "concurrently": "^9.1.0"
   }
 }
