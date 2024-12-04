@@ -5,21 +5,15 @@ import { CustomerDashboardService } from './customer-dashboard.service';
   selector: 'customer-dashboard',
   standalone: true,
   imports: [],
-  providers:[CustomerDashboardService],
-  template: `
-    <p>
-      customer-dashboard works!
-    </p>
-  `,
-  styles: ``
+  providers: [CustomerDashboardService],
+  templateUrl: './customer-dashboard.html',
+  styles: ``,
 })
 export class CustomerDashboardComponent implements OnInit {
-
   public customerDashService = inject(CustomerDashboardService);
 
   ngOnInit(): void {
-    console.log('CustomerDashboardComponent')
-    this.customerDashService.sayHallo()
+    console.log('CustomerDashboardComponent');
+    this.customerDashService.sayHallo();
   }
-
 }
