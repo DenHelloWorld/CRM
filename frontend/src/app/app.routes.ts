@@ -4,8 +4,8 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     loadComponent: () =>
-      import('./features/customer-dashboard/customer-dashboard.component').then(
-        (x) => x.CustomerDashboardComponent,
+      import('./features/dashboard/dashboard.component').then(
+        (x) => x.DashboardComponent,
       ),
     data: { headerBreadcrumb: 'Dashboard' },
   },
