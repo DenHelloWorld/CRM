@@ -2,8 +2,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { ErrorResponse } from '../../app.models';
 
-
-
 const handleHttpError = (error: HttpErrorResponse): Observable<never> => {
   let errorMessage: ErrorResponse = {
     message: ['Something went wrong'],

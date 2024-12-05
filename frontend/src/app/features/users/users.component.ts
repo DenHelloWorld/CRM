@@ -1,21 +1,29 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from './users.service';
+import { User } from './users.models';
+import { UserListItemComponent } from './components/user-list-item/user-list-item.component';
+import { CommonModule } from '@angular/common';
 
-interface User {}
 @Component({
   selector: 'users',
   standalone: true,
-  imports: [],
+  imports: [UserListItemComponent, CommonModule],
   providers: [UsersService],
-  template: ` <p>users works!</p> `,
+  templateUrl: './users.component.html',
   styles: ``,
 })
 export class UsersComponent implements OnInit {
   private readonly userService = inject(UsersService);
+  users: User[] = [];
   ngOnInit(): void {
-    this.userService.get().subscribe({
+    this.getUsers();
+  }
+
+  private getUsers() {
+    this.userService.get<User[]>().subscribe({
       next: (response) => {
-        console.log('Response:', response);
+        this.users = response.payload;
+        console.log('Users:', this.users);
       },
       error: (error) => {
         console.error('Error:', error);

@@ -16,7 +16,6 @@ import { filter, map } from 'rxjs/operators';
 })
 export class NavBreadcrumbComponent implements OnInit {
   public breadcrumbs: Array<{ label: string; url: string }> = [];
-
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
