@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('defaultpassword', 10);
+  const hashedPassword = await bcrypt.hash('@1Defaultpassword', 10);
 
   const users = await prisma.user.createMany({
     data: [

@@ -11,10 +11,9 @@ import {
   Delete,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
 import { ErrorResponse, SuccesResponse } from '../../app.models';
 import { User } from '@prisma/client';
-import { UpdateUserDto } from './dto/update-user.dto';
 import isNotUuidError from '../../helpers/isNotUuidError';
 import isUserNotFound from '../../helpers/isUserNotFound';
 
