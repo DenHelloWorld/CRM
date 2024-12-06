@@ -6,11 +6,9 @@ import {
   VERSION_NEUTRAL,
   VersioningType,
 } from '@nestjs/common';
-import { VersionMiddleware } from './middlewares/version.middleware';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
     origin: `http://localhost:${process.env.FRONTEND_PORT}`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -19,9 +17,8 @@ async function bootstrap() {
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: VERSION_NEUTRAL,
-    prefix: 'v',
   });
-  app.use(new VersionMiddleware().use);
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   const PORT = process.env.API_PORT;
   try {
