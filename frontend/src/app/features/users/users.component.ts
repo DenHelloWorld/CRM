@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
         console.log('Users:', this.users);
       },
       error: (error) => {
-        console.error('Error:', error);
+        console.error('Error in UsersComponent.getUsers:', error);
       },
     });
   }

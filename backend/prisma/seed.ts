@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 async function main() {
   const hashedPassword = await bcrypt.hash('defaultpassword', 10);
 
-  await prisma.user.createMany({
+  const users = await prisma.user.createMany({
     data: [
       {
         email: 'example1@mail.com',
@@ -20,7 +20,36 @@ async function main() {
       },
     ],
   });
-  console.log('Seeding completed.');
+  console.log(`${users.count} users created.`);
+
+  const createdUsers = await prisma.user.findMany({
+    where: {
+      email: {
+        in: ['example1@mail.com', 'example2@mail.com'],
+      },
+    },
+  });
+
+  for (const user of createdUsers) {
+    await prisma.task.createMany({
+      data: [
+        {
+          title: 'First Task for ' + user.name,
+          description: 'Description for the first task',
+          status: 'PENDING',
+          userId: user.id,
+        },
+        {
+          title: 'Second Task for ' + user.name,
+          description: 'Description for the second task',
+          status: 'IN_PROGRESS',
+          userId: user.id,
+        },
+      ],
+    });
+  }
+
+  console.log('Tasks seeded successfully.');
 }
 
 main()

@@ -1,3 +1,5 @@
+import { Task } from "../tasks/tasks.models";
+
 export type Role = 'USER' | 'ADMIN' | 'MODERATOR';
 export interface User {
   id: string;
@@ -7,4 +9,5 @@ export interface User {
   updatedAt: string;
   role: Role;
   password: string;
+  tasks: Task[];
 }

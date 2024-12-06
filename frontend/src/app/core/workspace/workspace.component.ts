@@ -8,9 +8,8 @@ import { RouterOutlet } from '@angular/router';
   imports: [HeaderComponent, RouterOutlet],
   template: `
     <main>
-      <app-header />
-
-      <router-outlet />
+      <app-header class="w-full" />
+      <router-outlet class="w-full" />
     </main>
   `,
 })

@@ -14,6 +14,14 @@ export class UserService {
     createdAt: true,
     updatedAt: true,
     role: true,
+    tasks: {
+      select: {
+        id: true,
+        title: true,
+        status: true,
+        description: true,
+      },
+    },
     password: false,
   };
 

@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
   template: `
     <a
       [routerLink]="'/'"
-      class="flex font-medium items-center text-white mb-4 md:mb-0"
+      class="flex font-medium items-center text-white"
     >
       <span
         class="ml-3 text-xl bg-purple-800 rounded-full w-14 h-14 flex items-center justify-center"

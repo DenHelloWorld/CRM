@@ -8,12 +8,15 @@ import { WorkspaceComponent } from './core/workspace/workspace.component';
   imports: [SystemMenuComponent, WorkspaceComponent],
   template: `
     <div class="flex">
-      <app-system-menu />
-      <app-workspace class="w-full" />
+      <app-system-menu [style.width]="systemMenuWidth" />
+      <app-workspace [style.width]="workspaceWidth()" />
     </div>
   `,
   styles: [],
 })
 export class AppComponent {
-  title = 'frontend';
+  systemMenuWidth = '170px';
+  workspaceWidth() {
+    return `calc(100% - ${this.systemMenuWidth})`;
+  }
 }
