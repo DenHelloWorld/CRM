@@ -1,13 +1,16 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { UsersService } from './users.service';
 import { User } from './users.models';
-import { UserListItemComponent } from './components/user-list-item/user-list-item.component';
 import { CommonModule } from '@angular/common';
+import {
+  copyDateToClipboard,
+  copyToClipboard,
+} from '../../core/utils/copy-to-clipboard';
 
 @Component({
   selector: 'users',
   standalone: true,
-  imports: [UserListItemComponent, CommonModule],
+  imports: [CommonModule],
   providers: [UsersService],
   templateUrl: './users.component.html',
   styles: ``,
@@ -29,5 +32,13 @@ export class UsersComponent implements OnInit {
         console.error('Error:', error);
       },
     });
+  }
+
+  public copyToClipboard(value: string, label: string): void {
+    copyToClipboard(value, label);
+  }
+
+  public copyFormattedDateToClipboard(date: string, label: string): void {
+    copyDateToClipboard(date, label);
   }
 }

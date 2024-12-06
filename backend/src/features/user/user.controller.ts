@@ -18,7 +18,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import isNotUuidError from '../../helpers/isNotUuidError';
 import isUserNotFound from '../../helpers/isUserNotFound';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -34,6 +34,7 @@ export class UserController {
       statusCode: HttpStatus.CREATED,
     };
   }
+
   @Get()
   @HttpCode(HttpStatus.OK)
   async findAll(): Promise<SuccesResponse<Omit<User, 'password'>[]>> {

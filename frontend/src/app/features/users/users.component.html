@@ -1,3 +1,105 @@
-<ul class="dark:bg-gray-700">
-  <app-user-list-item *ngFor="let user of users" [user]="user" />
-</ul>
+<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+  <thead
+    class="text-xs text-light-text bg-light-bg-second uppercase dark:bg-dark-bg-second dark:text-dark-text"
+  >
+    <tr>
+      <th scope="col" class="px-6 py-3">Id</th>
+      <th scope="col" class="px-6 py-3">Name</th>
+      <th scope="col" class="px-6 py-3">Email</th>
+      <th scope="col" class="px-6 py-3">Created At</th>
+      <th scope="col" class="px-6 py-3">Updated At</th>
+      <th scope="col" class="px-6 py-3">Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      [id]="user.id"
+      *ngFor="let user of users"
+      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-copy"
+    >
+      <td
+        [title]="user.id"
+        (click)="copyToClipboard(user.id, 'id')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.id }}
+      </td>
+
+      <td
+        [title]="user.name"
+        (click)="copyToClipboard(user.name, 'name')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.name }}
+      </td>
+
+      <td
+        [title]="user.email"
+        (click)="copyToClipboard(user.email, 'email')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 250px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.email }}
+      </td>
+
+      <td
+        [title]="user.createdAt | date : 'yyyy-MM-dd HH:mm:ss'"
+        (click)="copyFormattedDateToClipboard(user.createdAt, 'createdAt')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.createdAt | date : 'yyyy-MM-dd HH:mm:ss' }}
+      </td>
+
+      <td
+        [title]="user.updatedAt | date : 'yyyy-MM-dd HH:mm:ss'"
+        (click)="copyFormattedDateToClipboard(user.updatedAt, 'updatedAt')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 200px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.updatedAt | date : 'yyyy-MM-dd HH:mm:ss' }}
+      </td>
+
+      <td
+        [title]="user.role"
+        (click)="copyToClipboard(user.role, 'role')"
+        class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
+        style="
+          max-width: 150px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        "
+      >
+        {{ user.role }}
+      </td>
+    </tr>
+  </tbody>
+</table>

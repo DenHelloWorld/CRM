@@ -11,5 +11,5 @@ export interface ErrorResponse extends Response {
 }
 
 export const endpoints = {
-  user: 'user',
+  user: 'users',
 };
