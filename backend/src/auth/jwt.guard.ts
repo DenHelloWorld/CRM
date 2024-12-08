@@ -6,8 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import 'dotenv/config';
-import { PUBLIC_KEY } from './auth.decorators';
+import CONSTANTS from '../constants';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -18,10 +17,9 @@ export class JwtAuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const isPublic = this.reflector.get<boolean>(
-      PUBLIC_KEY,
+      CONSTANTS.publicKey,
       context.getHandler(),
     );
-
     if (isPublic) {
       return true;
     }
@@ -42,7 +40,7 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET_KEY,
+        secret: CONSTANTS.jwtSecret,
       });
 
       request.user = decoded;

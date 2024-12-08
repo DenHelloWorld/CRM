@@ -1,6 +1,4 @@
 import { SetMetadata } from '@nestjs/common';
-import 'dotenv/config';
+import CONSTANTS from '../constants';
 
-export const PUBLIC_KEY = process.env.PUBLIC_KEY;
-
-export const Public = () => SetMetadata(PUBLIC_KEY, true);
+export const Public = () => SetMetadata(CONSTANTS.publicKey, true);

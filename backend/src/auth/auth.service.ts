@@ -12,11 +12,10 @@ import {
 } from './dto/auth.dto';
 import { PrismaService } from '../../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
-import 'dotenv/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../features/user/user.service';
 import { Role, User } from '@prisma/client';
-import checkEnvVars from '../helpers/checkEnvVars';
+import CONSTANTS from '../constants';
 
 @Injectable()
 export class AuthService {
@@ -57,7 +56,7 @@ export class AuthService {
 
   public async registerUser(
     dto: RegistrationUserDto,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<User, 'password' | 'refreshToken'>> {
     const userExists = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -108,9 +107,6 @@ export class AuthService {
     email: string,
     role: Role,
   ): string {
-    checkEnvVars('JWT_SECRET_KEY');
-    checkEnvVars('TOKEN_EXPIRE_TIME');
-
     const payload = {
       userId,
       email,
@@ -120,8 +116,8 @@ export class AuthService {
 
     try {
       return this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET_KEY,
-        expiresIn: process.env.TOKEN_EXPIRE_TIME,
+        secret: CONSTANTS.jwtSecret,
+        expiresIn: CONSTANTS.tokenExpireTime,
         algorithm: 'HS256',
       });
     } catch {
@@ -134,9 +130,6 @@ export class AuthService {
     email: string,
     role: string,
   ): string {
-    checkEnvVars('JWT_SECRET_REFRESH_KEY');
-    checkEnvVars('TOKEN_REFRESH_EXPIRE_TIME');
-
     const payload = {
       userId,
       email,
@@ -146,8 +139,8 @@ export class AuthService {
 
     try {
       return this.jwtService.sign(payload, {
-        secret: process.env.JWT_SECRET_REFRESH_KEY,
-        expiresIn: process.env.TOKEN_REFRESH_EXPIRE_TIME,
+        secret: CONSTANTS.jwtRefreshSecret,
+        expiresIn: CONSTANTS.tokenExpireTime,
         algorithm: 'HS256',
       });
     } catch {
@@ -157,9 +150,11 @@ export class AuthService {
 
   private async createUser(
     dto: RegistrationUserDto,
-  ): Promise<Omit<User, 'password'>> {
-    const saltOrRounds = process.env.CRYPT_SALT;
-    const hashedPassword = await bcrypt.hash(dto.password, +saltOrRounds || 10);
+  ): Promise<Omit<User, 'password' | 'refreshToken'>> {
+    const hashedPassword = await bcrypt.hash(
+      dto.password,
+      +CONSTANTS.cryptSalt,
+    );
     dto.password = hashedPassword;
 
     const user = await this.userService.create(dto);

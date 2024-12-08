@@ -36,7 +36,9 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async registration(
     @Body() dto: RegistrationUserDto,
-  ): Promise<SuccessResponse<Omit<User, 'password'>> | ErrorResponse> {
+  ): Promise<
+    SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
+  > {
     return handleRequest(
       () => this.authService.registerUser(dto),
       [

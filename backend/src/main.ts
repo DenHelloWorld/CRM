@@ -6,11 +6,12 @@ import {
   VERSION_NEUTRAL,
   VersioningType,
 } from '@nestjs/common';
+import CONSTANTS from './constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: `http://localhost:${process.env.FRONTEND_PORT}`,
+    origin: `http://localhost:${CONSTANTS.frontendPort}`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -20,10 +21,9 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  const PORT = process.env.API_PORT;
   try {
-    await app.listen(PORT);
-    console.info(`App listening on port ${PORT}`);
+    await app.listen(CONSTANTS.apiPort);
+    console.info(`App listening on port ${CONSTANTS.apiPort}`);
   } catch (error) {
     console.error(error.message);
   }
