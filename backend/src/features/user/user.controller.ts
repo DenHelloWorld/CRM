@@ -9,14 +9,17 @@ import {
   HttpException,
   HttpStatus,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
-import { ErrorResponse, SuccesResponse } from '../../app.models';
+import { ErrorResponse, SuccessResponse } from '../../app.models';
 import { User } from '@prisma/client';
 import isNotUuidError from '../../helpers/isNotUuidError';
 import isUserNotFound from '../../helpers/isUserNotFound';
-
+import { JwtAuthGuard } from '../../auth/jwt.guard';
+import handleRequest from '../../helpers/handleRequest';
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -25,51 +28,53 @@ export class UserController {
   @HttpCode(HttpStatus.CREATED)
   async create(
     @Body() createUserDto: CreateUserDto,
-  ): Promise<SuccesResponse<Omit<User, 'password'>>> {
-    const user = await this.userService.create(createUserDto);
-    return {
-      message: ['User created successfully'],
-      payload: user,
-      statusCode: HttpStatus.CREATED,
-    };
+  ): Promise<SuccessResponse<Omit<User, 'password'>> | ErrorResponse> {
+    return handleRequest(
+      () => this.userService.create(createUserDto),
+      'User created successfully',
+      HttpStatus.CREATED,
+      'createUser',
+    );
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async findAll(): Promise<SuccesResponse<Omit<User, 'password'>[]>> {
-    const users = await this.userService.findAll();
-    return {
-      message: ['Users retrieved successfully'],
-      payload: users,
-      statusCode: HttpStatus.OK,
-    };
+  async findAll(): Promise<
+    SuccessResponse<Omit<User, 'password'>[]> | ErrorResponse
+  > {
+    return handleRequest(
+      () => this.userService.findAll(),
+      'Users retrieved successfully',
+      HttpStatus.OK,
+      'getUsers',
+    );
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(
     @Param('id') id: string,
-  ): Promise<SuccesResponse<Omit<User, 'password'>>> {
+  ): Promise<SuccessResponse<Omit<User, 'password'>> | ErrorResponse> {
     isNotUuidError(id);
-
     const user = await this.userService.findOne(id);
-
     isUserNotFound(user, id);
 
-    return {
-      message: ['User retrieved successfully'],
-      payload: user,
-      statusCode: HttpStatus.OK,
-    };
+    return handleRequest(
+      () => this.userService.findOne(id),
+      'User retrieved successfully',
+      HttpStatus.OK,
+      'getUser',
+    );
   }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<SuccessResponse<Omit<User, 'password'>> | ErrorResponse> {
     isNotUuidError(id);
-
     const user = await this.userService.findOne(id);
-
     isUserNotFound(user, id);
 
     if ('password' in dto) {
@@ -78,26 +83,30 @@ export class UserController {
         error: 'Forbidden',
         statusCode: HttpStatus.FORBIDDEN,
       };
-
       throw new HttpException(errorResponse, HttpStatus.FORBIDDEN);
     }
-    const updatedUser = await this.userService.update(user, dto);
 
-    return {
-      message: ['User updateted successfully'],
-      payload: updatedUser,
-      statusCode: HttpStatus.OK,
-    };
+    return handleRequest(
+      () => this.userService.update(dto),
+      'User updated successfully',
+      HttpStatus.OK,
+      'updateUser',
+    );
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id') id: string) {
+  async remove(
+    @Param('id') id: string,
+  ): Promise<SuccessResponse<void> | ErrorResponse> {
     isNotUuidError(id);
-
     const user = await this.userService.findOne(id);
-
     isUserNotFound(user, id);
 
-    return await this.userService.remove(id);
+    return handleRequest(
+      () => this.userService.remove(id),
+      'User removed successfully',
+      HttpStatus.NO_CONTENT,
+      'deleteUser',
+    );
   }
 }

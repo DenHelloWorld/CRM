@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import 'dotenv/config';
-import { PUBLIC_KEY, REFRESH_KEY } from './auth.decorators';
+import { PUBLIC_KEY } from './auth.decorators';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -21,14 +21,6 @@ export class JwtAuthGuard implements CanActivate {
       PUBLIC_KEY,
       context.getHandler(),
     );
-    const isRefresh = this.reflector.get<boolean>(
-      REFRESH_KEY,
-      context.getHandler(),
-    );
-
-    if (isRefresh) {
-      return true;
-    }
 
     if (isPublic) {
       return true;

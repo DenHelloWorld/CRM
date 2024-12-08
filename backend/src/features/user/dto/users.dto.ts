@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsStrongPassword,
   IsOptional,
+  IsUUID,
 } from 'class-validator';
 import { Role } from '@prisma/client';
 
@@ -33,6 +34,9 @@ export class CreateUserDto {
   password: string;
 }
 export class UpdateUserDto {
+  @IsUUID()
+  id: string;
+
   @IsOptional()
   @IsString()
   name?: string;

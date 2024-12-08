@@ -4,7 +4,7 @@ export interface Response {
   message: string[];
   statusCode: HttpStatus;
 }
-export interface SuccesResponse<T> extends Response {
+export interface SuccessResponse<T> extends Response {
   payload: T;
 }
 

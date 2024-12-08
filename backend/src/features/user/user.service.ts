@@ -6,7 +6,7 @@ import { User } from '@prisma/client';
 export class UserService {
   @Inject(PrismaService) private readonly prisma: PrismaService;
 
-  private readonly userWithoutPasswordSelect = {
+  private readonly withoutPasswordToken = {
     id: true,
     email: true,
     name: true,
@@ -22,45 +22,67 @@ export class UserService {
       },
     },
     password: false,
+    refreshToken: false,
   };
 
-  async create(dto: CreateUserDto): Promise<Omit<User, 'password'>> {
+  // private readonly withoutPasswordToken = this.configService.get(
+  //   'WITHOUT_PASSWORD_TOKEN',
+  // );
+
+  async updateRefreshToken(userId: string, refreshToken: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { refreshToken },
+    });
+  }
+
+  async findByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email },
+    });
+    return user;
+  }
+
+  async create(
+    dto: CreateUserDto,
+  ): Promise<Omit<User, 'password' | 'refreshToken'>> {
     return await this.prisma.user.create({
       data: {
         ...dto,
       },
-      select: this.userWithoutPasswordSelect,
+      select: this.withoutPasswordToken,
     });
   }
 
-  async findAll(): Promise<Omit<User, 'password'>[]> {
+  async findAll(): Promise<Omit<User, 'password' | 'refreshToken'>[]> {
     return await this.prisma.user.findMany({
-      select: this.userWithoutPasswordSelect,
+      select: this.withoutPasswordToken,
     });
   }
 
-  async findOne(id: string): Promise<Omit<User, 'password'> | null> {
+  async findOne(
+    id: string,
+  ): Promise<Omit<User, 'password' | 'refreshToken'> | null> {
     return await this.prisma.user.findUnique({
       where: { id },
-      select: this.userWithoutPasswordSelect,
+      select: this.withoutPasswordToken,
     });
   }
 
   async update(
-    user: Omit<User, 'password'>,
     dto: UpdateUserDto,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<Omit<User, 'password' | 'refreshToken'>> {
     return await this.prisma.user.update({
-      where: { id: user.id },
+      where: { id: dto.id },
       data: {
         ...dto,
       },
-      select: this.userWithoutPasswordSelect,
+      select: this.withoutPasswordToken,
     });
   }
 
   async remove(id: string) {
-    return await this.prisma.user.delete({
+    await this.prisma.user.delete({
       where: { id },
     });
   }
