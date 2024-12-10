@@ -71,7 +71,7 @@ export class AuthService {
 
   public async refreshToken(
     dto: RefreshTokenDto,
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  ): Promise<{ id: string; accessToken: string; refreshToken: string }> {
     const user = await this.prisma.user.findUnique({
       where: { id: dto.userId },
     });
@@ -97,6 +97,7 @@ export class AuthService {
     });
 
     return {
+      id: user.id,
       accessToken: newAccessToken,
       refreshToken: newRefreshToken,
     };

@@ -13,7 +13,7 @@ export class UsersService {
   private readonly apiUrl = environment.apiUrl;
   private readonly endpoint = environment.endpoints.user;
 
-  get<T>(): Observable<SuccessResponse<T>> {
+  async get<T>(): Promise<Observable<SuccessResponse<T>>> {
     return this.http
       .get<SuccessResponse<T>>(`${this.apiUrl}/${this.endpoint}`)
       .pipe(catchError(handleHttpError));

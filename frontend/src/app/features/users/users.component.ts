@@ -22,8 +22,8 @@ export class UsersComponent implements OnInit {
     this.getUsers();
   }
 
-  private getUsers() {
-    this.userService.get<User[]>().subscribe({
+  private async getUsers() {
+    (await this.userService.get<User[]>()).subscribe({
       next: (response) => {
         this.users = response.payload;
         console.log('Users:', this.users);

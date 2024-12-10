@@ -1,6 +1,12 @@
-import { Task } from "../tasks/tasks.models";
+import { WritableSignal } from '@angular/core';
+import { Task } from '../tasks/tasks.models';
 
-export type Role = 'USER' | 'ADMIN' | 'MODERATOR';
+export enum Role {
+  Admin = 'ADMIN',
+  User = 'USER',
+  Moderator = 'MODERATOR',
+  Guest = 'GUEST'
+}
 export interface User {
   id: string;
   email: string;
@@ -10,4 +16,5 @@ export interface User {
   role: Role;
   password: string;
   tasks: Task[];
+  authStatus: WritableSignal<boolean>;
 }

@@ -10,6 +10,16 @@ export interface ErrorResponse extends Response {
   error: string;
 }
 
-export const endpoints = {
+export interface Endpoints {
+  user: string;
+  login: string;
+  register: string;
+  refresh: string;
+}
+
+export const endpoints: Endpoints = {
   user: 'users',
+  login: 'auth/login',
+  register: 'auth/register',
+  refresh: 'auth/refresh',
 };

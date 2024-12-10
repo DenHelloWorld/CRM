@@ -1,4 +1,4 @@
-import { HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus } from '@nestjs/common';
 import { SuccessResponse, ErrorResponse } from '../app.models';
 import { handleHttpError } from './handleHttpError';
 
@@ -18,7 +18,8 @@ const handleRequest = async <T>(
       statusCode,
     };
   } catch (error) {
-    return handleHttpError(error, errorContext);
+    const errorResponse = handleHttpError(error, errorContext);
+    throw new HttpException(errorResponse, errorResponse.statusCode);
   }
 };
 export default handleRequest;

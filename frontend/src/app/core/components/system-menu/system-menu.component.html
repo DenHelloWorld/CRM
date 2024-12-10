@@ -1,4 +1,8 @@
-<aside class="z-40 h-screen" aria-label="Sidebar">
+<aside
+  *ngIf="authService.currrentuser.authStatus()"
+  class="z-40 h-screen"
+  aria-label="Sidebar"
+>
   <div
     class="h-full px-3 py-4 overflow-y-auto bg-light-bg-second dark:bg-bg-second"
   >
