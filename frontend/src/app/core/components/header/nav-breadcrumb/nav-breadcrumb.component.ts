@@ -9,10 +9,9 @@ import {
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-nav-breadcrumb',
-  templateUrl: './nav-breadcrumb.component.html',
-  standalone: true,
-  imports: [RouterModule, CommonModule],
+    selector: 'app-nav-breadcrumb',
+    templateUrl: './nav-breadcrumb.component.html',
+    imports: [RouterModule, CommonModule]
 })
 export class NavBreadcrumbComponent implements OnInit {
   public breadcrumbs: Array<{ label: string; url: string }> = [];

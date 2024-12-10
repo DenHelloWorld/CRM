@@ -5,11 +5,10 @@ import { BounceOnClickDirective } from '../../directives/bounce-on-click.directi
 import { AuthService } from '../../../features/auth/auth.service';
 
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [NavBreadcrumbComponent, LogoComponent, BounceOnClickDirective],
-  templateUrl: './header.html',
-  providers: [AuthService],
+    selector: 'app-header',
+    imports: [NavBreadcrumbComponent, LogoComponent, BounceOnClickDirective],
+    templateUrl: './header.html',
+    providers: [AuthService]
 })
 export class HeaderComponent {
   public readonly authService = inject(AuthService);

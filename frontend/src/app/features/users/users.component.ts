@@ -8,12 +8,11 @@ import {
 } from '../../core/utils/copy-to-clipboard';
 
 @Component({
-  selector: 'users',
-  standalone: true,
-  imports: [CommonModule],
-  providers: [UsersService],
-  templateUrl: './users.component.html',
-  styles: ``,
+    selector: 'users',
+    imports: [CommonModule],
+    providers: [UsersService],
+    templateUrl: './users.component.html',
+    styles: ``
 })
 export class UsersComponent implements OnInit {
   private readonly userService = inject(UsersService);

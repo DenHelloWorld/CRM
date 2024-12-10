@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'tasks',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'tasks',
+    imports: [],
+    template: `
     <p>
       tasks works!
     </p>
   `,
-  styles: ``
+    styles: ``
 })
 export class TasksComponent {
 

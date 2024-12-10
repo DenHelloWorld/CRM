@@ -12,11 +12,10 @@ import { BounceOnClickDirective } from '../../../core/directives/bounce-on-click
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-create-user',
-  templateUrl: './create-user.component.html',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, BounceOnClickDirective],
-  providers: [AuthService],
+    selector: 'app-create-user',
+    templateUrl: './create-user.component.html',
+    imports: [CommonModule, ReactiveFormsModule, BounceOnClickDirective],
+    providers: [AuthService]
 })
 export class CreateUserComponent implements OnInit {
   private readonly fb = inject(FormBuilder);

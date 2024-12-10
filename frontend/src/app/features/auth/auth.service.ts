@@ -1,12 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Role, User } from '../users/users.models';
-import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap } from 'rxjs';
 import { SuccessResponse } from '../../app.models';
 import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
 import { CreateUser, LoginUser, RefreshToken } from './auth.models';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +29,6 @@ export class AuthService {
     authStatus: signal<boolean>(this.isAuthenticated()),
   };
 
-  // Метод регистрации
   register(dto: CreateUser): Observable<SuccessResponse<User>> {
     return this.http
       .post<SuccessResponse<User>>(

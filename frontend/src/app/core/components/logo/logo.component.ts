@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-logo',
-  standalone: true,
-  imports: [RouterModule],
-  template: `
+    selector: 'app-logo',
+    imports: [RouterModule],
+    template: `
     <a
       [routerLink]="'/'"
       class="flex font-medium items-center text-white"
@@ -16,7 +15,7 @@ import { RouterModule } from '@angular/router';
         CRM
       </span>
     </a>
-  `,
+  `
 })
 export class LogoComponent implements OnInit {
   constructor() {}
