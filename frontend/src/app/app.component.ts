@@ -2,11 +2,11 @@ import { Component, computed, inject } from '@angular/core';
 import { SystemMenuComponent } from './core/components/system-menu/system-menu.component';
 import { WorkspaceComponent } from './core/components/workspace/workspace.component';
 import { AuthService } from './features/auth/auth.service';
+import { GLOBAL_USER } from './features/auth/user.signal';
 
 @Component({
   selector: 'app-root',
   imports: [SystemMenuComponent, WorkspaceComponent],
-  providers: [AuthService],
   template: `
     <div class="flex w-full h-screen">
       <app-system-menu [style.width]="systemMenuWidth()" />
@@ -15,11 +15,6 @@ import { AuthService } from './features/auth/auth.service';
   `,
 })
 export class AppComponent {
-  public readonly authService = inject(AuthService);
-
-  systemMenuWidth = computed(() =>
-    this.authService.currrentuser.authStatus() ? '170px' : '0',
-  );
-
+  systemMenuWidth = computed(() => (GLOBAL_USER().authStatus ? '170px' : '0'));
   workspaceWidth = computed(() => `calc(100% - ${this.systemMenuWidth()})`);
 }

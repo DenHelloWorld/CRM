@@ -16,6 +16,14 @@
     >
       Sign Up
     </button>
+    <button
+      (click)="authService.logout()"
+      *ngIf="user().authStatus"
+      appBounceOnClick
+      class="py-2 px-4 bg-hover-bg text-white rounded shadow-md hover:bg-accent-text transition disabled:opacity-50"
+    >
+      Logout
+    </button>
   </div>
 
   <router-outlet />

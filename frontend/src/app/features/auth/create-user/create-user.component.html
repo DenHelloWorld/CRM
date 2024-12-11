@@ -84,14 +84,18 @@
         >
       </div>
     </div>
-
-    <button
-      appBounceOnClick
-      type="submit"
-      [disabled]="createUserForm.invalid"
-      class="m-auto py-2 px-4 bg-hover-bg text-white rounded shadow-md hover:bg-accent-text transition disabled:opacity-50"
-    >
-      Submit
-    </button>
+    <div class="flex justify-start items-center gap-4">
+      <button
+        appBounceOnClick
+        type="submit"
+        [disabled]="createUserForm.invalid"
+        class="m-auto py-2 px-4 bg-hover-bg text-white rounded shadow-md hover:bg-accent-text transition disabled:opacity-50"
+      >
+        Sign Up
+      </button>
+      <span *ngIf="createUserForm.errors?.['serverError']" class="text-red-500">
+        {{ createUserForm.errors?.['serverError'] }}
+      </span>
+    </div>
   </form>
 </div>

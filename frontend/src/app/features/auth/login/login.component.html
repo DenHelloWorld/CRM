@@ -49,13 +49,18 @@
       </div>
     </div>
 
-    <button
-      appBounceOnClick
-      type="submit"
-      [disabled]="loginForm.invalid"
-      class="m-auto py-2 px-4 bg-hover-bg text-white rounded shadow-md hover:bg-accent-text transition disabled:opacity-50"
-    >
-      Submit
-    </button>
+    <div class="flex justify-start items-center gap-4">
+      <button
+        appBounceOnClick
+        type="submit"
+        [disabled]="loginForm.invalid"
+        class="py-2 px-4 bg-hover-bg text-white rounded shadow-md hover:bg-accent-text transition disabled:opacity-50"
+      >
+        Sign In
+      </button>
+      <span *ngIf="loginForm.errors?.['serverError']" class="text-red-500">
+        {{ loginForm.errors?.['serverError'] }}
+      </span>
+    </div>
   </form>
 </div>

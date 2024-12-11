@@ -1,5 +1,5 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { Role, User } from '../users/users.models';
+import { inject, Injectable } from '@angular/core';
+import { User } from '../users/users.models';
 import { environment } from '../../../environments/environment';
 import { catchError, Observable, tap } from 'rxjs';
 import { SuccessResponse } from '../../app.models';
@@ -7,6 +7,7 @@ import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
 import { CreateUser, LoginUser, RefreshToken } from './auth.models';
 import { HttpClient } from '@angular/common/http';
+import { GLOBAL_USER } from './user.signal';
 
 @Injectable({
   providedIn: 'root',
@@ -17,18 +18,6 @@ export class AuthService {
   private readonly apiUrl = environment.apiUrl;
   private readonly endpoints = environment.endpoints;
 
-  currrentuser: User = {
-    id: '',
-    email: '',
-    name: '',
-    createdAt: '',
-    updatedAt: '',
-    role: Role.Guest,
-    password: '',
-    tasks: [],
-    authStatus: signal<boolean>(this.isAuthenticated()),
-  };
-
   register(dto: CreateUser): Observable<SuccessResponse<User>> {
     return this.http
       .post<SuccessResponse<User>>(
@@ -38,7 +27,7 @@ export class AuthService {
       .pipe(
         catchError(handleHttpError),
         tap((response) => {
-          this.currrentuser = response.payload;
+          GLOBAL_USER.set(response.payload);
           this.secureStorage.set('userCRM', response.payload);
         }),
       );
@@ -61,7 +50,10 @@ export class AuthService {
         catchError(handleHttpError),
         tap((response) => {
           this.setTokens(response.payload);
-          this.currrentuser.authStatus.set(true);
+          GLOBAL_USER.update((user) => ({
+            ...user,
+            authStatus: true,
+          }));
         }),
       );
   }
@@ -90,7 +82,10 @@ export class AuthService {
   logout() {
     this.secureStorage.remove('userCRM');
     this.secureStorage.remove('tokensCRM');
-    this.currrentuser.authStatus.set(false);
+    GLOBAL_USER.update((user) => ({
+      ...user,
+      authStatus: false,
+    }));
   }
 
   setTokens(tokens: { id: string; accessToken: string; refreshToken: string }) {

@@ -4,14 +4,6 @@ import { ConfigService } from '@nestjs/config';
 const configService = new ConfigService();
 const logger = new Logger('CONSTANTS');
 
-const logConfigValue = (key: string, value: any) => {
-  if (value) {
-    logger.log(`Loaded config: ${key}`);
-  } else {
-    logger.warn(`Config value for ${key} is undefined or null`);
-  }
-};
-
 const CONSTANTS = {
   apiPort: configService.get<string>('API_PORT'),
   frontendPort: configService.get<string>('FRONTEND_PORT'),
@@ -45,6 +37,13 @@ const CONSTANTS = {
   },
 };
 
+const logConfigValue = (key: string, value: any) => {
+  if (value) {
+    logger.log(`Loaded config: ${key}`);
+  } else {
+    logger.warn(`Config value for ${key} is undefined or null`);
+  }
+};
 for (const [key, value] of Object.entries(CONSTANTS)) {
   logConfigValue(key, value);
 }

@@ -9,6 +9,7 @@ import {
 import { BounceOnClickDirective } from '../../../core/directives/bounce-on-click.directive';
 import { AuthService } from '../auth.service';
 import { LoginUser } from '../auth.models';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { LoginUser } from '../auth.models';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
   loginForm: FormGroup = this.fb.group({});
   ngOnInit() {
@@ -40,15 +42,20 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      const formValue: LoginUser = this.loginForm.value;
-
-      this.authService.login(formValue).subscribe({
+      this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          console.log('Login successful:', response); // Переходим на стартовый роут приложения, записываем себе токены
+          console.log('Login successful:', response);
+          this.router.navigate(['auth']);
         },
         error: (error) => {
           console.error('Login error:', error);
-          // Написать ошибку возле кнопки сабмита
+          if (error.status === 0) {
+            this.loginForm.setErrors({
+              serverError: 'Internet connection error',
+            });
+          } else {
+            this.loginForm.setErrors({ serverError: error.error });
+          }
         },
         complete: () => {
           console.log('Login request completed');

@@ -10,16 +10,18 @@ import { CreateUser } from '../auth.models';
 import { CommonModule } from '@angular/common';
 import { BounceOnClickDirective } from '../../../core/directives/bounce-on-click.directive';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-create-user',
-    templateUrl: './create-user.component.html',
-    imports: [CommonModule, ReactiveFormsModule, BounceOnClickDirective],
-    providers: [AuthService]
+  selector: 'app-create-user',
+  templateUrl: './create-user.component.html',
+  imports: [CommonModule, ReactiveFormsModule, BounceOnClickDirective],
+  providers: [AuthService],
 })
 export class CreateUserComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
   roles = Object.values(Role);
   createUserForm: FormGroup = this.fb.group({});
   ngOnInit() {
@@ -59,15 +61,20 @@ export class CreateUserComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.createUserForm.valid) {
-      const formValue: CreateUser = this.createUserForm.value;
-
-      this.authService.register(formValue).subscribe({
+      this.authService.register(this.createUserForm.value).subscribe({
         next: (response) => {
-          console.log('Registration successful:', response); // Переходим на роут логина
+          console.log('Registration successful:', response);
+          this.router.navigate(['auth/sign-in']);
         },
         error: (error) => {
           console.error('Registration error:', error);
-          // Написать ошибку возле кнопки сабмита
+          if (error.status === 0) {
+            this.createUserForm.setErrors({
+              serverError: 'Internet connection error',
+            });
+          } else {
+            this.createUserForm.setErrors({ serverError: error.error });
+          }
         },
         complete: () => {
           console.log('Registration request completed');

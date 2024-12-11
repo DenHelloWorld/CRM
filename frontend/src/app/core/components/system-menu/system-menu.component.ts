@@ -1,15 +1,20 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BounceOnClickDirective } from '../../directives/bounce-on-click.directive';
-import { AuthService } from '../../../features/auth/auth.service';
 import { CommonModule } from '@angular/common';
+import { GLOBAL_USER } from '../../../features/auth/user.signal';
 
 @Component({
-    selector: 'app-system-menu',
-    templateUrl: './system-menu.component.html',
-    imports: [RouterModule, BounceOnClickDirective, CommonModule],
-    providers: [AuthService]
+  selector: 'app-system-menu',
+  templateUrl: './system-menu.component.html',
+  imports: [RouterModule, BounceOnClickDirective, CommonModule],
 })
 export class SystemMenuComponent {
-  public readonly authService = inject(AuthService);
+  user = GLOBAL_USER;
+
+  constructor() {
+    effect(() => {
+      this.user();
+    });
+  }
 }

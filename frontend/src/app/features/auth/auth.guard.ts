@@ -1,17 +1,22 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, effect, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { GLOBAL_USER } from './user.signal';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  private readonly authService = inject(AuthService);
-  private readonly user = this.authService.currrentuser;
+  private readonly user = GLOBAL_USER;
   private readonly router = inject(Router);
 
+  constructor() {
+    effect(() => {
+      console.log('User  in AuthGuard:', this.user());
+    });
+  }
+
   canActivate(): boolean {
-    const isAuthenticated = this.user.authStatus();
+    const isAuthenticated = this.user().authStatus;
 
     if (!isAuthenticated) {
       this.router.navigate(['/auth']);
