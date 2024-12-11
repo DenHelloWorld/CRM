@@ -30,6 +30,24 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/auth/auth.component').then((x) => x.AuthComponent),
     data: { headerBreadcrumb: 'Authentification' },
+    children: [
+      {
+        path: 'sign-in',
+        loadComponent: () =>
+          import('./features/auth/login/login.component').then(
+            (x) => x.LoginComponent,
+          ),
+        data: { headerBreadcrumb: 'Sign In' },
+      },
+      {
+        path: 'sign-up',
+        loadComponent: () =>
+          import('./features/auth/create-user/create-user.component').then(
+            (x) => x.CreateUserComponent,
+          ),
+        data: { headerBreadcrumb: 'Sign Up' },
+      },
+    ],
   },
 
   {

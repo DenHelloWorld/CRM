@@ -4,15 +4,15 @@ import { WorkspaceComponent } from './core/components/workspace/workspace.compon
 import { AuthService } from './features/auth/auth.service';
 
 @Component({
-    selector: 'app-root',
-    imports: [SystemMenuComponent, WorkspaceComponent],
-    providers: [AuthService],
-    template: `
-    <div class="flex w-full h-full">
+  selector: 'app-root',
+  imports: [SystemMenuComponent, WorkspaceComponent],
+  providers: [AuthService],
+  template: `
+    <div class="flex w-full h-screen">
       <app-system-menu [style.width]="systemMenuWidth()" />
       <app-workspace class="flex-grow" [style.width]="workspaceWidth()" />
     </div>
-  `
+  `,
 })
 export class AppComponent {
   public readonly authService = inject(AuthService);

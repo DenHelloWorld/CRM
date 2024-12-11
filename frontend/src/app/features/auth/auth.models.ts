@@ -1,14 +1,12 @@
 import { Role } from '../users/users.models';
 
-export interface CreateUser {
-  name: string;
-  email: string;
-  role: Role;
-  password: string;
-}
 export interface LoginUser {
   email: string;
   password: string;
+}
+export interface CreateUser extends LoginUser {
+  name: string;
+  role: Role;
 }
 
 export interface RefreshToken {

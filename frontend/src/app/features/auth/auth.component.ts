@@ -1,16 +1,13 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
-import { CreateUserComponent } from './create-user/create-user.component';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { BounceOnClickDirective } from '../../core/directives/bounce-on-click.directive';
 
 @Component({
-    selector: 'app-auth',
-    templateUrl: './auth.component.html',
-    providers: [AuthService],
-    imports: [CreateUserComponent]
+  selector: 'app-auth',
+  providers: [AuthService],
+  imports: [RouterOutlet, CommonModule, BounceOnClickDirective, RouterModule],
+  templateUrl: './auth.component.html',
 })
-export class AuthComponent implements OnInit {
-  private readonly authService = inject(AuthService);
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class AuthComponent {}

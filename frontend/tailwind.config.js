@@ -22,6 +22,9 @@ module.exports = {
         // Цвета для фона при наведении
         'hover-bg': '#EAB500', // Акцентный фон для наведения
       },
+      boxShadow: {
+        'inner-left-top': 'inset 5px 5px 5px 0px rgba(0,0,0,0.48)',
+      },
     },
   },
   plugins: [],

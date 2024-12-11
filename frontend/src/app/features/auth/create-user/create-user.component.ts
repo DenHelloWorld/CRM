@@ -1,5 +1,5 @@
 import { Role } from './../../users/users.models';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -17,12 +17,12 @@ import { AuthService } from '../auth.service';
     imports: [CommonModule, ReactiveFormsModule, BounceOnClickDirective],
     providers: [AuthService]
 })
-export class CreateUserComponent implements OnInit {
+export class CreateUserComponent implements OnInit, OnDestroy {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
   roles = Object.values(Role);
   createUserForm: FormGroup = this.fb.group({});
-  ngOnInit(): void {
+  ngOnInit() {
     this.createUserForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -36,6 +36,9 @@ export class CreateUserComponent implements OnInit {
         ],
       ],
     });
+  }
+  ngOnDestroy() {
+    this.createUserForm = this.fb.group({});
   }
 
   get name() {
