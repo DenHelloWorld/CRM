@@ -67,14 +67,10 @@ export class CreateUserComponent implements OnInit, OnDestroy {
           this.router.navigate(['auth/sign-in']);
         },
         error: (error) => {
-          console.error('Registration error:', error);
-          if (error.status === 0) {
-            this.createUserForm.setErrors({
-              serverError: 'Internet connection error',
-            });
-          } else {
-            this.createUserForm.setErrors({ serverError: error.error });
-          }
+          console.error('Login error:', error);
+          const errorMessage =
+            error.status === 0 ? 'Internet connection error' : error.error;
+          this.createUserForm.setErrors({ serverError: errorMessage });
         },
         complete: () => {
           console.log('Registration request completed');

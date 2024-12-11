@@ -40,28 +40,22 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginForm = this.fb.group({});
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
-          this.router.navigate(['auth']);
-        },
-        error: (error) => {
-          console.error('Login error:', error);
-          if (error.status === 0) {
-            this.loginForm.setErrors({
-              serverError: 'Internet connection error',
-            });
-          } else {
-            this.loginForm.setErrors({ serverError: error.error });
-          }
-        },
-        complete: () => {
-          console.log('Login request completed');
-        },
-      });
-    }
+  onSubmit(): void {
+    if (!this.loginForm.valid) return;
+
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (response) => {
+        console.log('Login successful:', response);
+        this.router.navigate(['auth']);
+      },
+      error: (error) => {
+        console.error('Login error:', error);
+        const errorMessage =
+          error.status === 0 ? 'Internet connection error' : error.error;
+        this.loginForm.setErrors({ serverError: errorMessage });
+      },
+      complete: () => console.log('Login request completed'),
+    });
   }
 
   get email() {
