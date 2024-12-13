@@ -1,0 +1,18 @@
+<header
+  class="text-light-text dark:text-dark-text bg-light-bg dark:bg-dark-bg body-font"
+>
+  <div class="container mx-auto flex p-5 items-center gap-4">
+    <app-logo />
+
+    <div class="flex justify-between w-full">
+      <app-nav-breadcrumb />
+
+      <button
+        appBounceOnClick
+        class="inline-flex items-center bg-light-bg dark:bg-dark-bg border-0 py-1 px-3 focus:outline-none hover:bg-hover-bg hover:text-light-text rounded"
+      >
+        {{ user().authStatus }}
+      </button>
+    </div>
+  </div>
+</header>

@@ -1,40 +1,94 @@
 import {
   Controller,
   Get,
-  // Post,
-  // Body,
-  // Patch,
-  // Param,
-  // Delete,
+  Post,
+  Body,
+  HttpCode,
+  Put,
+  Param,
+  HttpStatus,
+  Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
-
-@Controller('user')
+import { CreateUserDto, UpdateUserDto, uuidDto } from './dto/users.dto';
+import { ErrorResponse, SuccessResponse } from '../../app.models';
+import { User } from '@prisma/client';
+import { JwtAuthGuard } from '../../auth/jwt.guard';
+import handleRequest from '../../helpers/handleRequest';
+@UseGuards(JwtAuthGuard)
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @Post()
-  // create(@Body() createUserDto: CreateUserDto) {
-  //   return this.userService.create(createUserDto);
-  // }
-  @Get()
-  async findAll() {
-    return await this.userService.findAll();
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  async create(
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<
+    SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
+  > {
+    return handleRequest(
+      () => this.userService.create(createUserDto),
+      'User created successfully',
+      HttpStatus.CREATED,
+      'createUser',
+    );
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.userService.findOne(+id);
-  // }
+  @Get()
+  @HttpCode(HttpStatus.OK)
+  async findAll(): Promise<
+    SuccessResponse<Omit<User, 'password' | 'refreshToken'>[]> | ErrorResponse
+  > {
+    return handleRequest(
+      () => this.userService.findAll(),
+      'Users retrieved successfully',
+      HttpStatus.OK,
+      'getUsers',
+    );
+  }
 
-  // @Patch(':id')
-  // // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  // //   return this.userService.update(+id, updateUserDto);
-  // // }
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  async findOne(
+    @Param('id') param: uuidDto,
+  ): Promise<
+    SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
+  > {
+    return handleRequest(
+      () => this.userService.findOne(param.id),
+      'User retrieved successfully',
+      HttpStatus.OK,
+      'getUser',
+    );
+  }
+
+  @Put(':id')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') param: uuidDto,
+    @Body() dto: UpdateUserDto,
+  ): Promise<
+    SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
+  > {
+    return handleRequest(
+      () => this.userService.update(dto, param.id),
+      'User updated successfully',
+      HttpStatus.OK,
+      'updateUser',
+    );
+  }
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(
+    @Param('id') param: uuidDto,
+  ): Promise<SuccessResponse<void> | ErrorResponse> {
+    return handleRequest(
+      () => this.userService.remove(param.id),
+      'User removed successfully',
+      HttpStatus.NO_CONTENT,
+      'deleteUser',
+    );
+  }
 }

@@ -1,0 +1,23 @@
+.bounce {
+  display: inline-block;
+  animation: bounce 0.4s ease-in-out;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+    transform: translateX(0);
+    /* #EAB500 как такой звет запихнуть */
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: translateY(-3px);
+    transform: translateX(-1px);
+    box-shadow: 0px 10px 14px rgba(0, 0, 0, 0.5);
+  }
+  100% {
+    transform: translateY(0);
+    transform: translateX(0);
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+  }
+}

@@ -2,16 +2,21 @@
   "name": "crm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {},
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"cd backend && npx prisma studio\" \"cd backend && npm run start\" \"cd frontend && npm run start\""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/DenHelloWorld/CRM.git"
   },
   "author": "denissaveliev23@gmail.com",
-  "license": "SEE LICENSE IN ./LICENSE",
+  "license": "Mozilla Public License Version 2.0",
   "bugs": {
     "url": "https://github.com/DenHelloWorld/CRM/issues"
   },
-  "homepage": "https://github.com/DenHelloWorld/CRM#readme"
+  "homepage": "https://github.com/DenHelloWorld/CRM#readme",
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
 }
