@@ -7,7 +7,7 @@ import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
 import { AuthTokens, CreateUser, LoginUser, RefreshToken } from './auth.models';
 import { HttpClient } from '@angular/common/http';
-import { GLOBAL_USER } from './user.signal';
+import GLOBAL_USER from './data/user.signal';
 
 @Injectable({
   providedIn: 'root',
@@ -112,7 +112,17 @@ export class AuthService {
     this.secureStorage.set('userCRM', user);
   }
 
+  getTokensFromLs(): AuthTokens | null {
+    return this.secureStorage.get('tokensCRM');
+  }
+
+  getUserFromLs(): Omit<User, 'password' | 'tasks' | 'authStatus'> | null {
+    return this.secureStorage.get('userCRM');
+  }
+
   isAuthenticated(): boolean {
-    return !!this.secureStorage.get('tokensCRM');
+    return !!(
+      this.secureStorage.get('tokensCRM') && this.secureStorage.get('userCRM')
+    );
   }
 }

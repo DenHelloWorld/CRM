@@ -1,7 +1,7 @@
 import { signal } from '@angular/core';
 import { User, Role } from '../../users/users.models';
 
-export const GLOBAL_USER = signal<User>({
+const GLOBAL_USER = signal<User>({
   id: '',
   email: '',
   name: '',
@@ -12,3 +12,4 @@ export const GLOBAL_USER = signal<User>({
   tasks: [],
   authStatus: false,
 });
+export default GLOBAL_USER;

@@ -3,7 +3,8 @@ import { AuthService } from './auth.service';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BounceOnClickDirective } from '../../core/directives/bounce-on-click.directive';
-import { GLOBAL_USER } from './user.signal';
+import GLOBAL_USER from './data/user.signal';
+
 
 @Component({
   selector: 'app-auth',

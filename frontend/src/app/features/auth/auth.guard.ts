@@ -1,6 +1,6 @@
 import { Injectable, effect, inject } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { GLOBAL_USER } from './user.signal';
+import GLOBAL_USER from './data/user.signal';
 
 @Injectable({
   providedIn: 'root',
