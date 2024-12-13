@@ -8,7 +8,6 @@ import {
 } from '@angular/forms';
 import { BounceOnClickDirective } from '../../../core/directives/bounce-on-click.directive';
 import { AuthService } from '../auth.service';
-import { LoginUser } from '../auth.models';
 import { Router } from '@angular/router';
 
 @Component({

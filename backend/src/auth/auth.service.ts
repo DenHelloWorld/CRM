@@ -23,9 +23,12 @@ export class AuthService {
   @Inject(JwtService) private readonly jwtService: JwtService;
   @Inject(UserService) private readonly userService: UserService;
 
-  public async login(
-    dto: LoginUserDto,
-  ): Promise<{ id: string; accessToken: string; refreshToken: string }> {
+  public async login(dto: LoginUserDto): Promise<
+    Omit<User, 'password'> & {
+      accessToken: string;
+      refreshToken: string;
+    }
+  > {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -47,16 +50,17 @@ export class AuthService {
       data: { refreshToken },
     });
 
+    const { password, ...userWithoutSensitiveData } = user;
+    void password;
+
     return {
-      id: user.id,
+      ...userWithoutSensitiveData,
       accessToken,
       refreshToken,
     };
   }
 
-  public async registerUser(
-    dto: RegistrationUserDto,
-  ): Promise<Omit<User, 'password' | 'refreshToken'>> {
+  public async registerUser(dto: RegistrationUserDto): Promise<void> {
     const userExists = await this.prisma.user.findUnique({
       where: { email: dto.email },
     });
@@ -65,8 +69,7 @@ export class AuthService {
       throw new ConflictException('The user with this email already exists');
     }
 
-    const user = this.createUser(dto);
-    return user;
+    await this.createUser(dto);
   }
 
   public async refreshToken(

@@ -7,8 +7,8 @@ import {
   RegistrationUserDto,
 } from './dto/auth.dto';
 import { Public } from './auth.decorators';
-import { User } from '@prisma/client';
 import handleRequest from '../helpers/handleRequest';
+import { User } from '@prisma/client';
 
 @Controller('auth')
 export class AuthController {
@@ -17,10 +17,13 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.ACCEPTED)
-  async login(
-    @Body() dto: LoginUserDto,
-  ): Promise<
-    | SuccessResponse<{ id: string; accessToken: string; refreshToken: string }>
+  async login(@Body() dto: LoginUserDto): Promise<
+    | SuccessResponse<
+        Omit<User, 'password'> & {
+          accessToken: string;
+          refreshToken: string;
+        }
+      >
     | ErrorResponse
   > {
     return handleRequest(
@@ -36,9 +39,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async registration(
     @Body() dto: RegistrationUserDto,
-  ): Promise<
-    SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
-  > {
+  ): Promise<SuccessResponse<void> | ErrorResponse> {
     return handleRequest(
       () => this.authService.registerUser(dto),
       [

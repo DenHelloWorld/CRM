@@ -5,7 +5,7 @@ import { catchError, Observable, tap } from 'rxjs';
 import { SuccessResponse } from '../../app.models';
 import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
-import { CreateUser, LoginUser, RefreshToken } from './auth.models';
+import { AuthTokens, CreateUser, LoginUser, RefreshToken } from './auth.models';
 import { HttpClient } from '@angular/common/http';
 import { GLOBAL_USER } from './user.signal';
 
@@ -18,42 +18,56 @@ export class AuthService {
   private readonly apiUrl = environment.apiUrl;
   private readonly endpoints = environment.endpoints;
 
-  register(dto: CreateUser): Observable<SuccessResponse<User>> {
+  register(dto: CreateUser): Observable<SuccessResponse<void>> {
     return this.http
-      .post<SuccessResponse<User>>(
+      .post<SuccessResponse<void>>(
         `${this.apiUrl}/${this.endpoints.register}`,
         dto,
       )
-      .pipe(
-        catchError(handleHttpError),
-        tap((response) => {
-          GLOBAL_USER.set(response.payload);
-          this.secureStorage.set('userCRM', response.payload);
-        }),
-      );
+      .pipe(catchError(handleHttpError));
   }
 
-  login(
-    dto: LoginUser,
-  ): Observable<
-    SuccessResponse<{ id: string; accessToken: string; refreshToken: string }>
+  login(dto: LoginUser): Observable<
+    SuccessResponse<
+      Omit<User, 'password'> & {
+        accessToken: string;
+        refreshToken: string;
+      }
+    >
   > {
     return this.http
       .post<
-        SuccessResponse<{
-          id: string;
-          accessToken: string;
-          refreshToken: string;
-        }>
+        SuccessResponse<
+          Omit<User, 'password'> & {
+            accessToken: string;
+            refreshToken: string;
+          }
+        >
       >(`${this.apiUrl}/${this.endpoints.login}`, dto)
       .pipe(
         catchError(handleHttpError),
         tap((response) => {
-          this.setTokens(response.payload);
-          GLOBAL_USER.update((user) => ({
-            ...user,
+          const {
+            accessToken,
+            refreshToken,
+            id,
+            email,
+            name,
+            createdAt,
+            updatedAt,
+            role,
+          } = response.payload;
+          const tokens = { accessToken, refreshToken, id };
+          const user = { id, email, name, createdAt, updatedAt, role };
+
+          GLOBAL_USER.update((oldData) => ({
+            ...oldData,
             authStatus: true,
+            ...user,
           }));
+
+          this.setTokensInLs(tokens);
+          this.setUserInLs(user);
         }),
       );
   }
@@ -74,7 +88,7 @@ export class AuthService {
       .pipe(
         catchError(handleHttpError),
         tap((response) => {
-          this.setTokens(response.payload);
+          this.setTokensInLs(response.payload);
         }),
       );
   }
@@ -88,12 +102,14 @@ export class AuthService {
     }));
   }
 
-  setTokens(tokens: { id: string; accessToken: string; refreshToken: string }) {
+  setTokensInLs(tokens: AuthTokens) {
+    console.log('setTokens', tokens);
     this.secureStorage.set('tokensCRM', tokens);
   }
 
-  getTokens() {
-    return this.secureStorage.get('tokensCRM');
+  setUserInLs(user: Omit<User, 'password' | 'tasks' | 'authStatus'>) {
+    console.log('setUserInLs', user);
+    this.secureStorage.set('userCRM', user);
   }
 
   isAuthenticated(): boolean {

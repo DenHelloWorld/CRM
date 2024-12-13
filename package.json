@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "concurrently  \"cd backend && npm run docker:up\" \"cd backend && npm run start:dev\" \"cd frontend && npm run start\""
+    "start": "concurrently \"cd backend && npx prisma studio\" \"cd backend && npm run start\" \"cd frontend && npm run start\""
   },
   "repository": {
     "type": "git",

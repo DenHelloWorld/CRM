@@ -11,7 +11,7 @@ import { SuccessResponse } from '../../app.models';
 export class UsersService {
   private readonly http: HttpClient = inject(HttpClient);
   private readonly apiUrl = environment.apiUrl;
-  private readonly endpoint = environment.endpoints.user;
+  private readonly endpoint = environment.endpoints.protected.users;
 
   async get<T>(): Promise<Observable<SuccessResponse<T>>> {
     return this.http

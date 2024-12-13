@@ -13,3 +13,9 @@ export interface RefreshToken {
   userId: string;
   oldRefreshToken: string;
 }
+
+export interface AuthTokens {
+  id: string;
+  accessToken: string;
+  refreshToken: string;
+}

@@ -11,14 +11,14 @@ export interface ErrorResponse extends Response {
 }
 
 export interface Endpoints {
-  user: string;
+  protected: { users: string };
   login: string;
   register: string;
   refresh: string;
 }
 
 export const endpoints: Endpoints = {
-  user: 'users',
+  protected: { users: 'users' },
   login: 'auth/login',
   register: 'auth/register',
   refresh: 'auth/refresh',
