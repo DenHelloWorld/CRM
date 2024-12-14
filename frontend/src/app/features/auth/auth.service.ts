@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../users/users.models';
 import { environment } from '../../../environments/environment';
-import { catchError, Observable, tap } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { SuccessResponse } from '../../app.models';
 import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
@@ -86,9 +86,13 @@ export class AuthService {
         }>
       >(`${this.apiUrl}/${this.endpoints.refresh}`, dto)
       .pipe(
-        catchError(handleHttpError),
         tap((response) => {
           this.setTokensInLs(response.payload);
+        }),
+        catchError((error) => {
+          console.error('Failed to refresh tokens:', error);
+          this.logout();
+          return throwError(() => new Error('No valid tokens available'));
         }),
       );
   }
@@ -124,5 +128,11 @@ export class AuthService {
     return !!(
       this.secureStorage.get('tokensCRM') && this.secureStorage.get('userCRM')
     );
+  }
+
+  isTokenExpired(token: string): boolean {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const currentTime = Math.floor(Date.now() / 1000);
+    return payload.exp < currentTime;
   }
 }

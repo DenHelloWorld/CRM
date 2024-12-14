@@ -4,6 +4,14 @@ import { Strategy } from 'passport-jwt';
 import { ExtractJwt } from 'passport-jwt';
 import CONSTANTS from '../constants';
 
+interface JwtPayload {
+  userId: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
+
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -14,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return { userId: payload.userId, email: payload.email };
+  async validate(payload: JwtPayload) {
+    return { userId: payload.userId, email: payload.email, role: payload.role };
   }
 }
