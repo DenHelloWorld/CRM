@@ -7,7 +7,7 @@ import handleHttpError from '../../core/utils/api-error-handler';
 import { SecureStorageService } from '../../core/services/secure-local-storage.service';
 import { AuthTokens, CreateUser, LoginUser, RefreshToken } from './auth.models';
 import { HttpClient } from '@angular/common/http';
-import GLOBAL_USER from './data/user.signal';
+import GLOBAL_USER, { INIT_USER } from './data/user.signal';
 
 @Injectable({
   providedIn: 'root',
@@ -100,10 +100,7 @@ export class AuthService {
   logout() {
     this.secureStorage.remove('userCRM');
     this.secureStorage.remove('tokensCRM');
-    GLOBAL_USER.update((user) => ({
-      ...user,
-      authStatus: false,
-    }));
+    GLOBAL_USER.set(INIT_USER);
   }
 
   setTokensInLs(tokens: AuthTokens) {

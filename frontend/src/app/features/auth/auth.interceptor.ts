@@ -70,6 +70,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }),
         catchError((error) => {
           console.error('Token refresh failed', error);
+          // TODO: check in future behaviour after logout
           this.authService.logout();
           return throwError(() => new Error('No valid tokens available'));
         }),
