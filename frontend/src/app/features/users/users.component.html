@@ -1,8 +1,10 @@
-<div class=" overflow-x-auto">
+<div class="overflow-x-auto">
   <table class="min-w-full text-sm text-left text-gray-500 dark:text-gray-400">
     <thead
       class="text-xs text-light-text bg-light-bg-second uppercase dark:bg-dark-bg-second dark:text-dark-text"
     >
+
+    
       <tr>
         <th scope="col" class="px-6 py-3">Id</th>
         <th scope="col" class="px-6 py-3">Name</th>
@@ -23,12 +25,7 @@
           [title]="user.id"
           (click)="copyToClipboard(user.id, 'id')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.id }}
         </td>
@@ -37,12 +34,7 @@
           [title]="user.name"
           (click)="copyToClipboard(user.name, 'name')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.name }}
         </td>
@@ -51,12 +43,7 @@
           [title]="user.email"
           (click)="copyToClipboard(user.email, 'email')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 250px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.email }}
         </td>
@@ -65,12 +52,7 @@
           [title]="user.createdAt | date : 'yyyy-MM-dd HH:mm:ss'"
           (click)="copyFormattedDateToClipboard(user.createdAt, 'createdAt')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.createdAt | date : 'yyyy-MM-dd HH:mm:ss' }}
         </td>
@@ -79,12 +61,7 @@
           [title]="user.updatedAt | date : 'yyyy-MM-dd HH:mm:ss'"
           (click)="copyFormattedDateToClipboard(user.updatedAt, 'updatedAt')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 200px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.updatedAt | date : 'yyyy-MM-dd HH:mm:ss' }}
         </td>
@@ -93,12 +70,7 @@
           [title]="user.role"
           (click)="copyToClipboard(user.role, 'role')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 150px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.role }}
         </td>
@@ -106,12 +78,7 @@
           [title]="user.tasks"
           (click)="copyToClipboard(user.tasks.length.toString(), 'tasks')"
           class="px-6 py-4 text-nowrap overflow-hidden text-ellipsis hover:bg-hover-bg hover:text-light-text max-w-xs"
-          style="
-            max-width: 50px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          "
+          style="max-width: 50px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
         >
           {{ user.tasks.length }}
         </td>

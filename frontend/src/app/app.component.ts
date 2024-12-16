@@ -28,15 +28,13 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.isAuthenticated();
 
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        const route = this.getChildRoute(this.activatedRoute);
-        const breadcrumb = route?.snapshot.data['headerBreadcrumb'];
-        if (breadcrumb) {
-          this.titleService.setTitle(breadcrumb);
-        }
-      });
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
+      const route = this.getChildRoute(this.activatedRoute);
+      const breadcrumb = route?.snapshot.data['headerBreadcrumb'];
+      if (breadcrumb) {
+        this.titleService.setTitle(breadcrumb);
+      }
+    });
   }
 
   private getChildRoute(route: ActivatedRoute): ActivatedRoute {

@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto, UpdateUserDto, uuidDto } from './dto/users.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/users.dto';
 import { ErrorResponse, SuccessResponse } from '../../app.models';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../../auth/jwt.guard';
@@ -52,12 +52,12 @@ export class UserController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   async findOne(
-    @Param('id') param: uuidDto,
+    @Param('id') id: string,
   ): Promise<
     SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
   > {
     return handleRequest(
-      () => this.userService.findOne(param.id),
+      () => this.userService.findOne(id),
       'User retrieved successfully',
       HttpStatus.OK,
       'getUser',
@@ -67,13 +67,13 @@ export class UserController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   async update(
-    @Param('id') param: uuidDto,
+    @Param('id') id: string,
     @Body() dto: UpdateUserDto,
   ): Promise<
     SuccessResponse<Omit<User, 'password' | 'refreshToken'>> | ErrorResponse
   > {
     return handleRequest(
-      () => this.userService.update(dto, param.id),
+      () => this.userService.update(dto, id),
       'User updated successfully',
       HttpStatus.OK,
       'updateUser',
@@ -82,10 +82,10 @@ export class UserController {
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   async remove(
-    @Param('id') param: uuidDto,
+    @Param('id') id: string,
   ): Promise<SuccessResponse<void> | ErrorResponse> {
     return handleRequest(
-      () => this.userService.remove(param.id),
+      () => this.userService.remove(id),
       'User removed successfully',
       HttpStatus.NO_CONTENT,
       'deleteUser',

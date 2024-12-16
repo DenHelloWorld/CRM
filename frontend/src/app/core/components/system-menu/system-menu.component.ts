@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { BounceOnClickDirective } from '../../directives/bounce-on-click.directive';
 import { CommonModule } from '@angular/common';

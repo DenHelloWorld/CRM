@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CreateUser } from '../auth.models';
 import { CommonModule } from '@angular/common';
 import { BounceOnClickDirective } from '../../../core/directives/bounce-on-click.directive';
 import { AuthService } from '../auth.service';
@@ -39,23 +38,24 @@ export class CreateUserComponent implements OnInit, OnDestroy {
       ],
     });
   }
+
   ngOnDestroy() {
-    this.createUserForm = this.fb.group({});
+    this.createUserForm.reset();
   }
 
-  get name() {
+  get formName() {
     return this.createUserForm.get('name');
   }
 
-  get email() {
+  get formEmail() {
     return this.createUserForm.get('email');
   }
 
-  get role() {
+  get formRole() {
     return this.createUserForm.get('role');
   }
 
-  get password() {
+  get formPassword() {
     return this.createUserForm.get('password');
   }
 

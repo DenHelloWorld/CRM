@@ -13,14 +13,9 @@
         type="text"
         class="w-full p-2 border border-light-bg-second dark:border-dark-bg-second rounded focus:outline-none focus:ring-2 focus:ring-hover-bg bg-light-bg-second dark:bg-dark-bg-second"
       />
-      <div
-        *ngIf="name?.invalid && name?.touched"
-        class="mt-1 text-sm text-red-500"
-      >
-        <small *ngIf="name?.errors?.['required']">Name is required.</small>
-        <small *ngIf="name?.errors?.['minlength']"
-          >Name must be at least 3 characters long.</small
-        >
+      <div *ngIf="formName?.invalid && formName?.touched" class="mt-1 text-sm text-red-500">
+        <small *ngIf="formName?.errors?.['required']">Name is required.</small>
+        <small *ngIf="formName?.errors?.['minlength']">Name must be at least 3 characters long.</small>
       </div>
     </div>
 
@@ -32,14 +27,9 @@
         type="email"
         class="w-full p-2 border border-light-bg-second dark:border-dark-bg-second rounded focus:outline-none focus:ring-2 focus:ring-hover-bg bg-light-bg-second dark:bg-dark-bg-second"
       />
-      <div
-        *ngIf="email?.invalid && email?.touched"
-        class="mt-1 text-sm text-red-500"
-      >
-        <small *ngIf="email?.errors?.['required']">Email is required.</small>
-        <small *ngIf="email?.errors?.['email']"
-          >Please enter a valid email address.</small
-        >
+      <div *ngIf="formEmail?.invalid && formEmail?.touched" class="mt-1 text-sm text-red-500">
+        <small *ngIf="formEmail?.errors?.['required']">Email is required.</small>
+        <small *ngIf="formEmail?.errors?.['email']">Please enter a valid email address.</small>
       </div>
     </div>
 
@@ -52,11 +42,8 @@
       >
         <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
       </select>
-      <div
-        *ngIf="role?.invalid && role?.touched"
-        class="mt-1 text-sm text-red-500"
-      >
-        <small *ngIf="role?.errors?.['required']">Role is required.</small>
+      <div *ngIf="formRole?.invalid && formRole?.touched" class="mt-1 text-sm text-red-500">
+        <small *ngIf="formRole?.errors?.['required']">Role is required.</small>
       </div>
     </div>
 
@@ -68,19 +55,14 @@
         type="password"
         class="w-full p-2 border border-light-bg-second dark:border-dark-bg-second rounded focus:outline-none focus:ring-2 focus:ring-hover-bg bg-light-bg-second dark:bg-dark-bg-second"
       />
-      <div
-        *ngIf="password?.invalid && password?.touched"
-        class="mt-1 text-sm text-red-500"
-      >
-        <small *ngIf="password?.errors?.['required']"
-          >Password is required.</small
-        >
-        <small *ngIf="password?.errors?.['minlength']"
+      <div *ngIf="formPassword?.invalid && formPassword?.touched" class="mt-1 text-sm text-red-500">
+        <small *ngIf="formPassword?.errors?.['required']">Password is required.</small>
+        <small *ngIf="formPassword?.errors?.['minlength']"
           >Password must be at least 8 characters long.</small
         >
-        <small *ngIf="password?.errors?.['pattern']"
-          >Password must contain at least one uppercase letter, one lowercase
-          letter, one number, and one special character.</small
+        <small *ngIf="formPassword?.errors?.['pattern']"
+          >Password must contain at least one uppercase letter, one lowercase letter, one number,
+          and one special character.</small
         >
       </div>
     </div>

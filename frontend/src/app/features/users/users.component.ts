@@ -8,11 +8,11 @@ import {
 } from '../../core/utils/copy-to-clipboard';
 
 @Component({
-    selector: 'users',
-    imports: [CommonModule],
-    providers: [UsersService],
-    templateUrl: './users.component.html',
-    styles: ``
+  selector: 'app-users',
+  imports: [CommonModule],
+  providers: [UsersService],
+  templateUrl: './users.component.html',
+  styles: ``,
 })
 export class UsersComponent implements OnInit {
   private readonly userService = inject(UsersService);
@@ -20,7 +20,6 @@ export class UsersComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
   }
-
   private async getUsers() {
     (await this.userService.get<User[]>()).subscribe({
       next: (response) => {
