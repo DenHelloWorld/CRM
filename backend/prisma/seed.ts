@@ -22,34 +22,37 @@ async function main() {
   });
   console.log(`${users.count} users created.`);
 
-  const createdUsers = await prisma.user.findMany({
-    where: {
-      email: {
-        in: ['example1@mail.com', 'example2@mail.com'],
+  const tasks = await prisma.task.createMany({
+    data: [
+      {
+        title: 'Task 1',
+        description: 'Description for task 1',
+        status: 'PENDING',
       },
-    },
+      {
+        title: 'Task 2',
+        description: 'Description for task 2',
+        status: 'IN_PROGRESS',
+      },
+    ],
   });
+  console.log(`${tasks.count} tasks created.`);
+
+  const createdUsers = await prisma.user.findMany();
+  const createdTasks = await prisma.task.findMany();
 
   for (const user of createdUsers) {
-    await prisma.task.createMany({
-      data: [
-        {
-          title: 'First Task for ' + user.name,
-          description: 'Description for the first task',
-          status: 'PENDING',
+    for (const task of createdTasks) {
+      await prisma.userTask.create({
+        data: {
           userId: user.id,
+          taskId: task.id,
         },
-        {
-          title: 'Second Task for ' + user.name,
-          description: 'Description for the second task',
-          status: 'IN_PROGRESS',
-          userId: user.id,
-        },
-      ],
-    });
+      });
+    }
   }
 
-  console.log('Tasks seeded successfully.');
+  console.log('User-task relations seeded successfully.');
 }
 
 main()

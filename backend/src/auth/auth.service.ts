@@ -16,7 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../features/user/user.service';
 import { Role, User } from '@prisma/client';
 import CONSTANTS from '../constants';
-
+// TODO: add admin guard
 @Injectable()
 export class AuthService {
   @Inject(PrismaService) private readonly prisma: PrismaService;

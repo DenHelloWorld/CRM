@@ -16,6 +16,7 @@ import { ErrorResponse, SuccessResponse } from '../../app.models';
 import { User } from '@prisma/client';
 import { JwtAuthGuard } from '../../auth/jwt.guard';
 import handleRequest from '../../helpers/handleRequest';
+
 @UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UserController {
